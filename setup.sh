@@ -25,14 +25,9 @@ echo "--- Setting up Node.js frontend ---"
 # Navigate to the frontend directory
 cd frontend
 
-# Install dependencies first, then approve and rebuild the necessary packages
+# Install frontend dependencies using pnpm
 echo "Installing frontend dependencies with pnpm..."
 pnpm install
-
-# Approve and rebuild the build scripts for packages that need them
-echo "Approving and rebuilding build scripts for Tailwind CSS and esbuild..."
-echo -e "@tailwindcss/oxide\nesbuild" | pnpm approve-builds
-pnpm rebuild @tailwindcss/oxide esbuild
 
 # Navigate back to the root directory
 cd ..
