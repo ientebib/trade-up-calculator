@@ -25,6 +25,12 @@ echo "--- Setting up Node.js frontend ---"
 # Navigate to the frontend directory
 cd frontend
 
+# Forcefully allow build scripts for tailwind and esbuild
+# This is a workaround for environments that might cache the repo
+# without pulling the latest package.json changes.
+echo "Approving necessary build scripts for pnpm..."
+npm pkg set pnpm.allow-build='["@tailwindcss/oxide", "esbuild"]'
+
 # Install frontend dependencies using pnpm
 # Assumes pnpm is installed. If not, you might need to install it first.
 # e.g., npm install -g pnpm
