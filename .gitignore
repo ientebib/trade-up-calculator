@@ -1,0 +1,4 @@
+__pycache__/
+backend/venv/
+frontend/node_modules/
+*.db
