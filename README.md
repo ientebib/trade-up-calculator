@@ -30,3 +30,24 @@ MIT License. Use and modify freely.
 ---
 
 *Created by Isaac Entebi and AI pair programming. For questions or improvements, open an issue or pull request!* 
+## Batch Mode Prototype
+
+A simple FastAPI backend and React UI are provided under `/backend` and `/frontend` to run batch optimisations on multiple clients and vehicles.
+
+### Running locally
+
+1. Install Python requirements:
+   ```sh
+   cd backend && pip install -r requirements.txt
+   ```
+2. Start the API:
+   ```sh
+   uvicorn app.main:app --reload
+   ```
+3. In another terminal start the frontend:
+   ```sh
+   cd ../frontend && npm install && npm run dev
+   ```
+4. Open `http://localhost:5173` and click **Generate Demo Data** to create a demo run.
+
+Unit tests can be run with `pytest backend/tests`.
