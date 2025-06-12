@@ -1,4 +1,8 @@
-import sys, os; sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import sys
+import os
+
+# Add repository root to Python path so `backend` package can be imported
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from backend.app.optimizer import archetype
 
 
