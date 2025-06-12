@@ -876,18 +876,32 @@
         
         function calculateNPV(principal, annualRate, costOfFunds, months, discountRate = 0.10) {
             const payment = calculateMonthlyPayment(principal, annualRate, months);
-            const spread = annualRate - costOfFunds;
-            let npv = 0;
             let balance = principal;
-            
+            let grossYieldNPV = 0;
+            let costOfFundsNPV = 0;
+
+            if (principal <= 0 || months <= 0) {
+                return { grossYieldNPV: 0, costOfFundsNPV: 0, netMarginNPV: 0 };
+            }
+
             for (let i = 1; i <= months; i++) {
-                const monthlyProfit = balance * (spread / 12);
-                const principalPayment = payment - (balance * annualRate / 12);
+                const discFactor = Math.pow(1 + discountRate / 12, i);
+                
+                const grossInterestComponent = balance * (annualRate / 12);
+                grossYieldNPV += grossInterestComponent / discFactor;
+                
+                const costOfFundsComponent = balance * (costOfFunds / 12);
+                costOfFundsNPV += costOfFundsComponent / discFactor;
+                
+                const principalPayment = payment - grossInterestComponent;
                 balance -= principalPayment;
-                npv += monthlyProfit / Math.pow(1 + discountRate / 12, i);
             }
             
-            return npv;
+            return {
+                grossYieldNPV,
+                costOfFundsNPV,
+                netMarginNPV: grossYieldNPV - costOfFundsNPV
+            };
         }
         
         function formatCurrency(amount) {
