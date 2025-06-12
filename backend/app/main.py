@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import select
 import pandas as pd
 from .database import init_db, get_session
@@ -9,6 +10,14 @@ from typing import List, Optional
 from starlette.responses import JSONResponse
 
 app = FastAPI(title="TradeUp Batch")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 init_db()
 
@@ -46,7 +55,8 @@ def upload(clients: Optional[UploadFile] = File(None), vehicles: Optional[Upload
                 offer.run_id = run.id
                 session.add(offer)
         session.commit()
-    return {"run_id": run.id, "clients": len(df_clients), "vehicles": len(df_vehicles)}
+        run_id = run.id
+    return {"run_id": run_id, "clients": len(df_clients), "vehicles": len(df_vehicles)}
 
 
 @app.get("/runs")
@@ -55,7 +65,7 @@ def get_runs():
         runs = session.exec(select(Run)).all()
         result = []
         for r in runs:
-            count = session.exec(select(Offer).where(Offer.run_id == r.id)).count()
+            count = len(session.exec(select(Offer).where(Offer.run_id == r.id)).all())
             result.append({"id": r.id, "created_at": r.created_at.isoformat(), "offers": count})
         return result
 

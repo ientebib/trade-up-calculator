@@ -20,7 +20,7 @@ def generate_clients(n=100, path=Path('/tmp/clients.csv')):
         months_left = random.randint(12,term)
         current_rate = random.uniform(0.08,0.14)
         payment = random.randint(4000,9000)
-        value = random.randint(loan*0.6, loan*1.1)
+        value = random.randint(int(loan*0.6), int(loan*1.1))
         equity = random.randint(-20000,20000)
         rows.append({
             'client_id': f'C{i:03d}',
@@ -47,10 +47,15 @@ def generate_vehicles(n=150, path=Path('/tmp/vehicles.csv')):
     rows=[]
     for i in range(n):
         price = random.randint(150000,350000)
+        model_name = fake.word().title()
+        # Ensure model name is not None or empty
+        if not model_name or model_name.lower() in ['none', 'null', '']:
+            model_name = f"Model{i:03d}"
+        
         rows.append({
             'vehicle_id': f'V{i:03d}',
             'brand': random.choice(['Nissan','Toyota','Chevy']),
-            'model': fake.word().title(),
+            'model': model_name,
             'year': random.randint(2018,2023),
             'km': random.randint(5000,60000),
             'sale_price': price,
